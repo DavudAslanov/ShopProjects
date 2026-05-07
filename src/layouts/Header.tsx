@@ -53,21 +53,10 @@ export default function Header() {
         {/* <!-- Menu (sağa hizalı) --> */}
         <nav className="menu">
           <ul>
-            {/* <li>
-              <a href="#">HOMEPAGES ▾</a>
-            </li>
-            <li>
-              <a href="#">SHOP & PRODUCTS ▾</a>
-            </li>
-            <li>
-              <a href="#">BLOG</a>
-            </li>
-            <li>
-              <a href="#">PAGES ▾</a>
-            </li> */}
+            
 
             <li className="has-dropdown">
-              <a href="/home" aria-haspopup="true" aria-expanded="false">
+              <a href="/" aria-haspopup="true" aria-expanded="false">
                 HOMEPAGES ▾
               </a>
 

@@ -1,9 +1,91 @@
+'use client';
+
+import { useState } from 'react';
 import "@/style/product.css";
+import { PriceFilter } from '@/app/components/PriceFilter';
+import { ProductGrid } from '@/app/components/ProductGrid';
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  discount?: number;
+  isHot?: boolean;
+  placeholder: string;
+  placeholderAlt: string;
+  image: string;        
+  imageAlt?: string;    
+}
+
+const PRODUCTS: Product[] = [
+  {
+    id: 1,
+    name: 'Aarhus 3 seater sofa',
+    price: 5389,
+    placeholder: 'placeholder-1',
+    placeholderAlt: 'placeholder-1-alt',
+    image: '/images/main1.jpg',
+    imageAlt: '/images/main2.jpg'
+  },
+  {
+    id: 2,
+    name: 'Bang Olufsen Beoplay',
+    price: 4550,
+    isHot: true,
+    placeholder: 'placeholder-2',
+    placeholderAlt: 'placeholder-2-alt',
+    image: '/images/main2.jpg',
+    imageAlt: '/images/main1.jpg'
+  },
+  {
+    id: 3,
+    name: 'Bat Lounge Low Back',
+    price: 450,
+    placeholder: 'placeholder-3',
+    placeholderAlt: 'placeholder-3-alt',
+    image: '/images/main3.jpg',
+    imageAlt: '/images/main2.jpg'
+  },
+  {
+    id: 4,
+    name: 'Bottle Grinder Set',
+    price: 42,
+    placeholder: 'placeholder-4',
+    placeholderAlt: 'placeholder-4-alt',
+    image: '/images/main1.jpg',
+    imageAlt: '/images/main3.jpg'
+  },
+  {
+    id: 5,
+    name: 'Erik Buch Bar Stool',
+    price: 167,
+    originalPrice: 419,
+    discount: 60,
+    placeholder: 'placeholder-5',
+    placeholderAlt: 'placeholder-5-alt',
+    image: '/images/main2.jpg',
+    imageAlt: '/images/main1.jpg'
+  },
+  {
+    id: 6,
+    name: 'Folded Vase Carbon',
+    price: 75,
+    originalPrice: 155,
+    placeholder: 'placeholder-6',
+    placeholderAlt: 'placeholder-6-alt',
+    image: '/images/main1.jpg',
+    imageAlt: '/images/main2.jpg'
+  },
+];
 
 export default function ProductsPage() {
+  const [minPrice, setMinPrice] = useState(7);
+  const [maxPrice, setMaxPrice] = useState(5389);
+  const [currentPage, setCurrentPage] = useState(1);
   return (
     <main className="shop-page">
-      {/* ============ BANNER SECTION ============ */}
+      
       <section className="shop-section">
         <div className="shop-hero">
           <div className="shop-breadcrumb">
@@ -12,38 +94,35 @@ export default function ProductsPage() {
           </div>
           <div className="shop-content">
             <h1>Shop</h1>
-            <p>Elevate your space with our curated selection of beautifully designed, handcrafted furniture. Comfort meets style in every piece—perfect for any room in your home.</p>
+            <p>Elevate your space with our curated selection of beautifully designed, handcrafted furniture.</p>
           </div>
         </div>
         <div className="shop-categories">
-          <span className="category">Accessories <span className="count">4</span></span>
+          <span className="category">Accessories <sup className="count">4</sup></span>
           <span className="divider">/</span>
-          <span className="category">Bath Room <span className="count">1</span></span>
+          <span className="category">Bath Room <sup className="count">1</sup></span>
           <span className="divider">/</span>
-          <span className="category">Bedroom <span className="count">3</span></span>
+          <span className="category">Bedroom <sup className="count">3</sup></span>
         </div>
       </section>
 
-      {/* ============ SHOP BODY: FILTER + PRODUCTS ============ */}
+      
       <section className="shop-body">
-        {/* ---------- SIDEBAR / FILTER ---------- */}
+        
         <aside className="shop-filter">
-          <div className="filter-block">
-            <h3 className="filter-title">▲ FILTER BY PRICE</h3>
-            <div className="price-range">
-              <span className="range-knob left">$7</span>
-              <div className="range-bar"></div>
-              <span className="range-knob right">$5,389</span>
-            </div>
-            <p className="price-text">Price: $7 – $5,389</p>
-          </div>
+          <PriceFilter
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            onMinChange={setMinPrice}
+            onMaxChange={setMaxPrice}
+          />
 
           <div className="filter-block">
-            <h3 className="filter-title">▲ CATEGORIES</h3>
+            <h3 className="filter-title">▼ CATEGORIES</h3>
             <ul className="filter-list">
-              <li><label><input type="checkbox" /> ACCESSORIES</label></li>
-              <li><label><input type="checkbox" /> BATH ROOM</label></li>
-              <li><label><input type="checkbox" /> BEDROOM</label></li>
+              <li><label><input type="checkbox" /> <span className="category-text">ACCESSORIES</span></label></li>
+              <li><label><input type="checkbox" /> <span className="category-text">BATH ROOM</span></label></li>
+              <li><label><input type="checkbox" /> <span className="category-text">BEDROOM</span></label></li>
               <li><label><input type="checkbox" /> DINNING ROOM</label></li>
               <li><label><input type="checkbox" /> HOME DECOR</label></li>
               <li><label><input type="checkbox" /> KITCHEN</label></li>
@@ -58,7 +137,7 @@ export default function ProductsPage() {
           </div>
 
           <div className="filter-block">
-            <h3 className="filter-title">▲ BRANDS</h3>
+            <h3 className="filter-title">▼ BRANDS</h3>
             <div className="brands-grid">
               <div className="brand-box">Palma</div>
               <div className="brand-box">Furniture</div>
@@ -74,75 +153,68 @@ export default function ProductsPage() {
 
           <div className="filter-block">
             <ul className="rating-list">
-              <li><input type="checkbox" /> <span className="stars">★★★★★</span></li>
-              <li><input type="checkbox" /> <span className="stars">★★★★☆</span></li>
-              <li><input type="checkbox" /> <span className="stars">★★★☆☆</span></li>
-              <li><input type="checkbox" /> <span className="stars">★★☆☆☆</span></li>
-              <li><input type="checkbox" /> <span className="stars">★☆☆☆☆</span></li>
+              <li>
+                <input type="checkbox" />
+                <span className="stars">
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                </span>
+              </li>
+              <li>
+                <input type="checkbox" />
+                <span className="stars">
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star empty">☆</span>
+                </span>
+              </li>
+              <li>
+                <input type="checkbox" />
+                <span className="stars">
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star empty">☆</span>
+                  <span className="star empty">☆</span>
+                </span>
+              </li>
+              <li>
+                <input type="checkbox" />
+                <span className="stars">
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star empty">☆</span>
+                  <span className="star empty">☆</span>
+                  <span className="star empty">☆</span>
+                </span>
+              </li>
+              <li>
+                <input type="checkbox" />
+                <span className="stars">
+                  <span className="star filled">★</span>
+                  <span className="star empty">☆</span>
+                  <span className="star empty">☆</span>
+                  <span className="star empty">☆</span>
+                  <span className="star empty">☆</span>
+                </span>
+              </li>
             </ul>
           </div>
         </aside>
 
-        {/* ---------- PRODUCTS GRID ---------- */}
-        <div className="shop-products">
-          <div className="products-toolbar">
-            <span className="results-count">Showing 1–16 of 17 results</span>
-            <div className="pagination">
-              <span className="page active">1</span>
-              <span className="page">2</span>
-            </div>
-            <select className="sort-select">
-              <option>Default sorting</option>
-            </select>
-          </div>
-
-          <div className="products-grid">
-            <div className="product-card">
-              <div className="card-actions"><span>♡</span></div>
-              <div className="product-img placeholder-1"></div>
-              <h4>Aarhus 3 seater sofa</h4>
-              <p className="price">$5,389.00</p>
-            </div>
-            <div className="product-card">
-              <span className="badge hot">HOT</span>
-              <div className="card-actions"><span>♡</span></div>
-              <div className="product-img placeholder-2"></div>
-              <h4>Bang Olufsen Beoplay</h4>
-              <p className="price">$4,550.00</p>
-            </div>
-            <div className="product-card">
-              <div className="card-actions"><span>♡</span></div>
-              <div className="product-img placeholder-3"></div>
-              <h4>Bat Lounge Low Back</h4>
-              <p className="price">$450.00</p>
-            </div>
-            <div className="product-card">
-              <div className="card-actions"><span>♡</span></div>
-              <div className="product-img placeholder-4"></div>
-              <h4>Bottle Grinder Set</h4>
-              <p className="price">$42.00</p>
-            </div>
-            <div className="product-card">
-              <div className="card-actions"><span>♡</span></div>
-              <div className="product-img placeholder-5"></div>
-              <h4>Erik Buch Bar Stool</h4>
-              <p className="price">
-                <span className="old">$419.00</span>{" "}
-                <span className="new">$167.60</span>{" "}
-                <span className="discount">-60%</span>
-              </p>
-            </div>
-            <div className="product-card">
-              <div className="card-actions"><span>♡</span></div>
-              <div className="product-img placeholder-6"></div>
-              <h4>Folded Vase Carbon</h4>
-              <p className="price">
-                <span className="old">$155.00</span>{" "}
-                <span className="new">$75.00</span>
-              </p>
-            </div>
-          </div>
-        </div>
+        
+        <ProductGrid
+          products={PRODUCTS}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
       </section>
     </main>
   );
